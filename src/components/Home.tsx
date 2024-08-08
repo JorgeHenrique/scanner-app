@@ -1,9 +1,6 @@
-// src/components/Home.tsx
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scanner, IDetectedBarcode } from '@yudiel/react-qr-scanner';
-import axios from 'axios';
-import Loader from './Loader';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -76,7 +73,6 @@ const QRData = styled.p`
 
 const Home: React.FC = () => {
   const [scanning, setScanning] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [qrData, setQrData] = useState<string | null>(null);
   const apiCalled = useRef<boolean>(false);
   const navigate = useNavigate();
@@ -85,10 +81,9 @@ const Home: React.FC = () => {
     if (detectedCodes.length > 0 && !apiCalled.current) {
       apiCalled.current = true;
       setScanning(false);
-      setLoading(true);
       const result = detectedCodes[0].rawValue; // Usa o primeiro código detectado
       setQrData(result);
-      sendQRCodeData(result);
+      navigate('/scanner-app/stamp-form', { state: { qrData: result } });
     }
   };
 
@@ -96,24 +91,10 @@ const Home: React.FC = () => {
     console.error(error);
   };
 
-  const sendQRCodeData = async (data: string) => {
-    try {
-      await axios.post('https://your-api-url.com/endpoint', { qrData: data });
-      setLoading(false);
-      navigate('/scanner-app/result', { state: { success: true } });
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-      navigate('/scanner-app/result', { state: { success: false } });
-    }
-  };
-
   return (
     <Container>
       <Title>Escaneie o QR Code da Nota Fiscal</Title>
-      {loading ? (
-        <Loader />
-      ) : scanning ? (
+      {scanning ? (
         <ScannerContainer>
           <QRWrapper>
             <QRReader

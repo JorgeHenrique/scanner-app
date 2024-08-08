@@ -1,4 +1,3 @@
-// src/components/ResultPage.tsx
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
@@ -38,9 +37,9 @@ const ResultPage: React.FC = () => {
 
   return (
     <Container>
-      <h1>{success ? 'Success' : 'Failure'}</h1>
-      <p>{success ? 'Data sent successfully!' : 'Failed to send data.'}</p>
-      <Button onClick={() => navigate('/scanner-app/')}>Go Back</Button>
+      <h1>{success ? 'Sucesso!' : 'Falha no envio'}</h1>
+      <p>{success ? 'Nota Fiscal passível de carimbo!' : 'Falha ao adicionar carimbo a Nota Fiscal. Por favor tente novamente.'}</p>
+      <Button onClick={() => navigate('/scanner-app/')}>Voltar ao Início</Button>
     </Container>
   );
 };
