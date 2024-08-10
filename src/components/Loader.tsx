@@ -13,22 +13,29 @@ const LoaderContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-color: ${({ theme }) => theme.colors.backgroundLight}; 
 `;
 
 const LoaderSpinner = styled.div`
-  border: 16px solid #f3f3f3;
+  border: 16px solid ${({ theme }) => theme.colors.backgroundLight}; 
   border-radius: 50%;
-  border-top: 16px solid #3498db;
+  border-top: 16px solid ${({ theme }) => theme.colors.primary}; 
   width: 120px;
   height: 120px;
   animation: ${spin} 2s linear infinite;
+`;
+
+const LoadingText = styled.p`
+  color: ${({ theme }) => theme.colors.textDark}; 
+  font-size: 1.5em;
+  margin-top: 20px;
 `;
 
 const Loader: React.FC = () => {
   return (
     <LoaderContainer>
       <LoaderSpinner />
-      <p>Loading...</p>
+      <LoadingText>Loading...</LoadingText>
     </LoaderContainer>
   );
 };

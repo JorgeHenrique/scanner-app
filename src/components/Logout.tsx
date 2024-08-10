@@ -3,19 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import styled from '@emotion/styled';
 
-const Button = styled.button`
-  padding: 15px 30px;
+const TextButton = styled.p`
   font-size: 18px;
-  margin: 20px 0;
   cursor: pointer;
-  border-radius: 5px;
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  transition: background-color 0.3s ease;
-
+  color: ${({ theme }) => theme.colors.primary}; 
+  margin: 0;
   &:hover {
-    background-color: #c82333;
+    color: ${({ theme }) => theme.colors.textDark}; 
   }
 `;
 
@@ -30,7 +24,7 @@ const LogoutButton: React.FC = () => {
     navigate('/scanner-app/login');
   };
 
-  return <Button onClick={handleLogout}>Sair</Button>;
+  return <TextButton onClick={handleLogout}>Sair</TextButton>;
 };
 
 export default LogoutButton;

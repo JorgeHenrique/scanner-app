@@ -8,10 +8,19 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: ${({ theme }) => theme.colors.backgroundLight}; 
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
+`;
+
+const Title = styled.h1`
+  color: ${({ theme }) => theme.colors.textDark}; 
+`;
+
+const Message = styled.p`
+  color: ${({ theme }) => theme.colors.textDark}; 
+  margin-bottom: 20px;
 `;
 
 const Button = styled.button`
@@ -20,13 +29,13 @@ const Button = styled.button`
   margin: 20px 0;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: ${({ theme }) => theme.colors.primary}; 
+  color: ${({ theme }) => theme.colors.textLight}; 
   border: none;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: ${({ theme }) => theme.colors.textDark}; 
   }
 `;
 
@@ -37,8 +46,8 @@ const ResultPage: React.FC = () => {
 
   return (
     <Container>
-      <h1>{success ? 'Sucesso!' : 'Falha no envio'}</h1>
-      <p>{success ? 'Nota Fiscal passível de carimbo!' : 'Falha ao adicionar carimbo a Nota Fiscal. Por favor tente novamente.'}</p>
+      <Title>{success ? 'Sucesso!' : 'Falha no envio'}</Title>
+      <Message>{success ? 'Nota Fiscal passível de carimbo!' : 'Falha ao adicionar carimbo a Nota Fiscal. Por favor tente novamente.'}</Message>
       <Button onClick={() => navigate('/scanner-app/')}>Voltar ao Início</Button>
     </Container>
   );

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Scanner, IDetectedBarcode } from '@yudiel/react-qr-scanner';
 import styled from '@emotion/styled';
 import LogoutButton from './Logout'; // Importa o botão de logout
-import BackButton from './BackButton'; // Importa o botão de voltar
 
 const Container = styled.div`
   display: flex;
@@ -11,16 +10,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background-color: ${({ theme }) => theme.colors.backgroundLight}; 
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
-  position: relative; /* Para posicionar o botão de voltar */
+  position: relative;
 `;
 
 const Title = styled.h1`
   font-size: 2em;
-  color: #333;
+  color: ${({ theme }) => theme.colors.textDark}; 
   margin-bottom: 20px;
 `;
 
@@ -33,10 +32,10 @@ const ScannerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #333;
+  border: 2px solid ${({ theme }) => theme.colors.textDark}; 
   border-radius: 10px;
   overflow: hidden;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.backgroundLight}; 
 `;
 
 const QRWrapper = styled.div`
@@ -57,21 +56,28 @@ const Button = styled.button`
   margin: 20px 0;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: ${({ theme }) => theme.colors.primary}; 
+  color: ${({ theme }) => theme.colors.textLight}; 
   border: none;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: ${({ theme }) => theme.colors.textDark}; 
   }
 `;
 
 const QRData = styled.p`
   margin-top: 20px;
   font-size: 18px;
-  color: #333;
+  color: ${({ theme }) => theme.colors.textDark}; 
   word-break: break-word;
+`;
+
+const Footer = styled.div`
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
 `;
 
 const Home: React.FC = () => {
@@ -96,7 +102,7 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <Title>Escaneie o QR Code da Nota Fiscal</Title>
+      <Title>Hipoupe Delivery Scanner</Title>
       {scanning ? (
         <>
           <ScannerContainer>
@@ -111,7 +117,9 @@ const Home: React.FC = () => {
       ) : (
         <>
           <Button onClick={() => setScanning(true)}>Escanear Nota Fiscal</Button>
-          <LogoutButton /> {/* Exibe o botão de logout */}
+          <Footer>
+            <LogoutButton /> {/* Exibe o botão de logout como texto */}
+          </Footer>
         </>
       )}
       {code && <QRData>QR Data: {code}</QRData>}
