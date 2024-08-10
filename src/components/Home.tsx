@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Scanner, IDetectedBarcode } from '@yudiel/react-qr-scanner';
 import styled from '@emotion/styled';
+import LogoutButton from './Logout'; // Importa o botão de logout
+import BackButton from './BackButton'; // Importa o botão de voltar
 
 const Container = styled.div`
   display: flex;
@@ -13,6 +15,7 @@ const Container = styled.div`
   font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
+  position: relative; /* Para posicionar o botão de voltar */
 `;
 
 const Title = styled.h1`
@@ -73,7 +76,7 @@ const QRData = styled.p`
 
 const Home: React.FC = () => {
   const [scanning, setScanning] = useState<boolean>(false);
-  const [qrData, setQrData] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(null);
   const apiCalled = useRef<boolean>(false);
   const navigate = useNavigate();
 
@@ -81,9 +84,9 @@ const Home: React.FC = () => {
     if (detectedCodes.length > 0 && !apiCalled.current) {
       apiCalled.current = true;
       setScanning(false);
-      const result = detectedCodes[0].rawValue; // Usa o primeiro código detectado
-      setQrData(result);
-      navigate('/scanner-app/stamp-form', { state: { qrData: result } });
+      const result = detectedCodes[0].rawValue;
+      setCode(result);
+      navigate('/scanner-app/stamp-form', { state: { code: result } });
     }
   };
 
@@ -95,18 +98,23 @@ const Home: React.FC = () => {
     <Container>
       <Title>Escaneie o QR Code da Nota Fiscal</Title>
       {scanning ? (
-        <ScannerContainer>
-          <QRWrapper>
-            <QRReader
-              onScan={handleScan}
-              constraints={{ facingMode: 'environment' }}
-            />
-          </QRWrapper>
-        </ScannerContainer>
+        <>
+          <ScannerContainer>
+            <QRWrapper>
+              <QRReader
+                onScan={handleScan}
+                constraints={{ facingMode: 'environment' }}
+              />
+            </QRWrapper>
+          </ScannerContainer>
+        </>
       ) : (
-        <Button onClick={() => setScanning(true)}>Escanear Nota Fiscal </Button>
+        <>
+          <Button onClick={() => setScanning(true)}>Escanear Nota Fiscal</Button>
+          <LogoutButton /> {/* Exibe o botão de logout */}
+        </>
       )}
-      {qrData && <QRData>QR Data: {qrData}</QRData>}
+      {code && <QRData>QR Data: {code}</QRData>}
     </Container>
   );
 };

@@ -49,14 +49,24 @@ const Button = styled.button`
 const StampForm: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { qrData } = (location.state as { qrData: string }) || {};
-  const [stamps, setStamps] = useState<number>(1);
+  const { code } = (location.state as { code: string }) || {};
+  const [number, setNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdG9yZUlkIjoiNGEyMjdlYjQtYTk4Mi00YTMwLWFmMDEtOGRiNDU3MzZkYmI0IiwiZW1haWwiOiJzdGFyYnVja3NAZW1haWwuY29tIiwiaWF0IjoxNzIzMjIzNjIzLCJleHAiOjE3NTQ3NTk2MjN9.UTjk7QBucUyfP34qzGxBj5cexfpDubKFZZW1YPBQmBY"
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await axios.post('https://your-api-url.com/endpoint', { qrData, stamps });
+      await axios.post(
+        'http://localhost:3000/delivery/',
+        { code, number },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setLoading(false);
       navigate('/scanner-app/result', { state: { success: true } });
     } catch (error) {
@@ -75,8 +85,8 @@ const StampForm: React.FC = () => {
         <>
           <Input
             type="number"
-            value={stamps}
-            onChange={(e) => setStamps(Number(e.target.value))}
+            value={number}
+            onChange={(e) => setNumber(Number(e.target.value))}
             min={1}
           />
           <Button onClick={handleSubmit}>Enviar</Button>
